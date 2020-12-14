@@ -1,0 +1,203 @@
+<html>
+<head>
+<link rel="stylesheet" href="input/0000_Ndc.css">
+<style>
+.bg{
+	background-repeat: no-repeat;
+	background-size: 1024px 768px;
+	background-image: url('lib/white.gif');
+	font-size: 15px;
+	color:red; 
+	background-color: powderblue;
+	border-color: red;
+}
+.maindiv{
+	/*height: 768px;*/
+	width: 1024px;
+	/*background-color: powderblue;*/
+	
+}
+pre {display:true}
+</style>
+
+</head>
+<BODY class = "bg">
+	<div class="maindiv">
+		<div >
+			<h1>ATM Screen Validation</h1>
+		</div>
+		<div style="float: left;align-content: left;" ><br>	
+			<table>
+			<tr><td>Select"screen-contentsdata.xml":</td><td><input type="file" name="xmlfile"	id="xmlfile"></td></tr>
+			<tr><td>Select Input Images:</td><td><input id="selectedpath" type="text" readonly/><button onclick="getElementById('imageselector').click()">Browse</button></td></tr>
+			</table> 
+		</div>
+		<div style="float: right;">
+			<button type="button" onclick="previousImage()"> Previous</button>
+			<button type="button" onclick="nextImage()">Next</button>
+			<input id="imageselector" type="file" onchange="browseimages(event)" multiple="multiple" style="display:none" /> 
+		</div>
+	</div>
+		<DIV ID="BTNFDK1key">
+			<IMG ID="BTNFDK1key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+		<DIV ID="BTNFDK2key">
+			<IMG ID="BTNFDK2key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+		<DIV ID="BTNFDK3key">
+			<IMG ID="BTNFDK3key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+		<DIV ID="BTNFDK4key">
+			<IMG ID="BTNFDK4key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+		<DIV ID="BTNFDK5key">
+			<IMG ID="BTNFDK5key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+		<DIV ID="BTNFDK6key">
+			<IMG ID="BTNFDK6key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+		<DIV ID="BTNFDK7key">
+			<IMG ID="BTNFDK7key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+		<DIV ID="BTNFDK8key">
+			<IMG ID="BTNFDK8key00IMG" SRC="lib/btn_dummy_transparent.gif" style="border-color: red; border-width:1px; border-radius: 1px;border-style: solid;VISIBILITY:visible;">
+		</DIV>
+<script>
+
+var files = [];
+var path = "input/image/";
+var showIndex = 0 ;
+/////////ReadXML start////////////////
+document.getElementById('xmlfile').addEventListener('change', function() { 
+
+	var file = this.files[0];
+	var reader = new FileReader();
+	reader.onload = function(progressEvent){
+      // By lines
+    var lines = this.result.split('\n');
+	var fdk1reset =false;
+	var fdk2reset =false;
+	var fdk3reset =false;
+	var fdk4reset =false;
+	var fdk5reset =false;
+	var fdk6reset =false;
+	var fdk7reset =false;
+	var fdk8reset =false;
+	
+			
+    for(var line = 0; line < lines.length; line++){
+		var targetLine ="";
+		if(lines[line].indexOf("fdkA_correctData") > 0 && fdk1reset == false){		
+			resetYPositionForFDK("BTNFDK1key",lines[line]);
+			fdk1reset = true;
+		}else if (lines[line].indexOf("fdkB_correctData") >= 0 && fdk2reset == false) {
+			resetYPositionForFDK("BTNFDK2key",lines[line]);
+			fdk2reset = true;
+		}else if (lines[line].indexOf("fdkC_correctData") >= 0 && fdk3reset == false) {
+			resetYPositionForFDK("BTNFDK3key",lines[line]);
+			fdk3reset = true;
+		}else if (lines[line].indexOf("fdkD_correctData") >= 0 && fdk4reset == false) {
+			resetYPositionForFDK("BTNFDK4key",lines[line]);
+			fdk4reset = true;
+		}else if (lines[line].indexOf("fdkF_correctData") >= 0 && fdk5reset == false) {
+			resetYPositionForFDK("BTNFDK5key",lines[line]);
+			fdk5reset = true;
+		}else if (lines[line].indexOf("fdkG_correctData") >= 0 && fdk6reset == false) {
+			resetYPositionForFDK("BTNFDK6key",lines[line]);
+			fdk6reset = true;
+		}else if (lines[line].indexOf("fdkH_correctData") >= 0 && fdk7reset == false) {
+			resetYPositionForFDK("BTNFDK7key",lines[line]);
+			fdk7reset = true;
+		}else if (lines[line].indexOf("fdkI_correctData") >= 0 && fdk8reset == false) {
+			resetYPositionForFDK("BTNFDK8key",lines[line]);
+			fdk8reset = true;
+		}	
+		
+    }
+  };
+  reader.readAsText(file);
+			
+}) 
+function resetYPositionForFDK(fdk,targetLine){
+	var values = targetLine.split(",");
+	var extraTop = values[2].substr(0,values[2].indexOf("<"));
+	var testDiv = document.getElementById(fdk);
+	var top = testDiv.offsetTop 
+	var newValue = parseInt(top) + parseInt(extraTop);
+	document.getElementById(fdk).style.top = newValue;
+}
+///////////ReadXML end/////////////
+///////////Browse Images start////////////////////////
+function browseimages(e) {
+	showIndex = 0 ;
+	
+
+	
+	var name = document.getElementById('imageselector');
+	var pic = path + name.files[showIndex].name;
+	document.getElementById("selectedpath").value = pic;
+	document.body.style.backgroundImage = "url('" + pic + "')";
+	loadxml();
+}
+///////////Browse Images End////////////////////////
+///////////Next Images Start////////////////////////
+function nextImage() {
+	var name = document.getElementById('imageselector');
+	
+	if(name.files.length == 0){
+		alert("Please select the images first");
+		return "";
+	}else if (name.files.length == 1){
+		alert("Please select multiple images to use Next and Previous option");
+		return "";
+	}
+	
+	showIndex++;	
+	
+	if(showIndex >= name.files.length){
+		alert("Completed all selected files ! Next will start from begining " );
+		showIndex = 0; 
+		var pic = path + name.files[showIndex].name;
+		document.getElementById("selectedpath").value = pic;
+		document.body.style.backgroundImage = "url('" + pic + "')";
+	}else{
+		var pic = path + name.files[showIndex].name;
+		document.getElementById("selectedpath").value = pic;
+		document.body.style.backgroundImage = "url('" + pic + "')";
+		//alert(showIndex);
+	}
+	
+}
+///////////Next Images End////////////////////////
+///////////Previous Images Start////////////////////////
+function previousImage() {
+	var name = document.getElementById('imageselector');
+
+	if(name.files.length == 0){
+		alert("Please select the images first");
+		return "";
+	}else if (name.files.length == 1){
+		alert("Please select multiple images to use Next and Previous option");
+		return "";
+	}
+	
+	showIndex--;	
+	
+	if(showIndex < 0){
+		alert("Selected one is first file ! Clicking Previous will start from the end of list" );
+		showIndex = name.files.length; 
+		var pic = path + name.files[showIndex].name;
+		document.getElementById("selectedpath").value = pic;
+		document.body.style.backgroundImage = "url('" + pic + "')";
+	}else{
+		var pic = path + name.files[showIndex].name;
+		document.getElementById("selectedpath").value = pic;
+		document.body.style.backgroundImage = "url('" + pic + "')";
+		//alert(showIndex);
+	}
+	
+}
+///////////Previous Images End////////////////////////
+</script>
+<BODY>		
+</html>
